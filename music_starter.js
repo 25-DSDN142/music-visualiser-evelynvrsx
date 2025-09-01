@@ -7,9 +7,6 @@ let midFlowerX = 200;
 let midFlowerY = 300;
 let lerpAmount = 0;
 let lerpSpeed = 0.02;
-let angle = 0;
-let r = 100;
-let radius = 150;
 let gap = 10;
 
 // vocal, drum, bass, and other are volumes ranging from 0 to 100
@@ -31,9 +28,6 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   lineYPoint = height/2;
   lineXEnd = 4*(width/5);
   line(lineXStart, lineYPoint, lineXEnd-gap*2, lineYPoint);
-
-  // Vocal parameters (not used as shifting starts anymore)
-  // We'll layout groups of 4 columns (vocal, drum, bass, other) next to each other
 
   // Update lerp amount for smooth color transition
   lerpAmount += lerpSpeed;
