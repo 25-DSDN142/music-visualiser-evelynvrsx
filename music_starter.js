@@ -79,7 +79,7 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   //draw_one_flower(mappedDrum, 200);
   //rect(mappedDrum, 200, flowerDiameter, flowerDiameter);
 
-  draw_multiple_flowers();
+  //draw_multiple_flowers();
 
   
 }
