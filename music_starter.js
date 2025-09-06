@@ -1,14 +1,11 @@
 var col = 0;
-let numberOfFlowers = 5;
-let flowerDiameter = 70;
 let soundWaveRect = 30;
 let colors = [];
-let midFlowerX = 200;
-let midFlowerY = 300;
 let lerpAmount = 0;
 let lerpSpeed = 0.02;
 let gap = 5;
 let roundedRectRadius = 20;
+let starSize = 0.2;
 
 // vocal, drum, bass, and other are volumes ranging from 0 to 100
 
@@ -59,6 +56,7 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
     // draw each track in this group
     // Vocal
     fill(100, 100, 200);
+    noStroke();
     rect(vocalX, lineYPoint, soundWaveRect, mappedVocal, roundedRectRadius);
 
     // Drum
@@ -74,43 +72,28 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
     rect(otherX, lineYPoint, soundWaveRect, mappedOther, roundedRectRadius);
   }
 
+  star(width/4, height/4, 100*starSize, 40*starSize, 5);
   
-  //draw_one_flower(mappedDrum, 200);
-  //rect(mappedDrum, 200, flowerDiameter, flowerDiameter);
+  //rect(mappedDrum, 200, starDiameter, starDiameter);
 
-  //draw_multiple_flowers();
-
-  
 }
 
-function draw_multiple_flowers() {
-  for (let i = 1; i <= 5; i++) {
-    let x = random(width);
-    let y = random(height);
-
-    draw_one_flower(x, y);
-  }
-}
-
-function draw_one_flower(midFlowerX, midFlowerY) {
-  // Define colors once
+function star(x, y, outerRadius, innerRadius, points) {
+  // Star colour
   let pink = color(230, 94, 225);
   let yellow = color(254,214,123);
-
-  // Create smooth color transition
   let currentColor = lerpColor(pink, yellow, lerpAmount);
+  fill(currentColor)
 
-  let petalRotation = 360 / 5;
-  //noFill();
-  fill(currentColor);
-  
-  for (let i = 0; i < 5; i++) {
-    strokeWeight(3);
-    stroke(currentColor);
-    push();
-        translate(midFlowerX, midFlowerY);
-        rotate(petalRotation*i);
-        arc(0, 0-(flowerDiameter/5), flowerDiameter, flowerDiameter/2, 45, 360);
-    pop();
+  // Draw star shape
+  let angleStep = 360 / (points * 2);
+  beginShape();
+  for (let i = 0; i < points * 2; i++) {
+    let angle = i * angleStep - 90; // start pointing upwards
+    let r = (i % 2 === 0) ? outerRadius : innerRadius;
+    let sx = x + cos(angle) * r;
+    let sy = y + sin(angle) * r;
+    vertex(sx, sy);
   }
+  endShape(CLOSE);
 }
