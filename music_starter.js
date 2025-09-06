@@ -7,7 +7,8 @@ let midFlowerX = 200;
 let midFlowerY = 300;
 let lerpAmount = 0;
 let lerpSpeed = 0.02;
-let gap = 10;
+let gap = 5;
+let roundedRectRadius = 20;
 
 // vocal, drum, bass, and other are volumes ranging from 0 to 100
 
@@ -22,12 +23,10 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   randomSeed(3);
 
   // Draw line for the sound wave
-  stroke(255);
-  strokeWeight(2);
   lineXStart = width/5;
   lineYPoint = height/2;
   lineXEnd = 4*(width/5);
-  line(lineXStart, lineYPoint, lineXEnd-gap*2, lineYPoint);
+  //line(lineXStart, lineYPoint, lineXEnd-gap*2, lineYPoint);
 
   // Update lerp amount for smooth color transition
   lerpAmount += lerpSpeed;
@@ -60,19 +59,19 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
     // draw each track in this group
     // Vocal
     fill(100, 100, 200);
-    rect(vocalX, lineYPoint, soundWaveRect, mappedVocal);
+    rect(vocalX, lineYPoint, soundWaveRect, mappedVocal, roundedRectRadius);
 
     // Drum
     fill(100, 200, 100);
-    rect(drumX, lineYPoint, soundWaveRect, mappedDrum);
+    rect(drumX, lineYPoint, soundWaveRect, mappedDrum, roundedRectRadius);
 
     // Bass
     fill(200, 100, 100);
-    rect(bassX, lineYPoint, soundWaveRect, mappedBass);
+    rect(bassX, lineYPoint, soundWaveRect, mappedBass, roundedRectRadius);
 
     // Other
     fill(200, 200, 100);
-    rect(otherX, lineYPoint, soundWaveRect, mappedOther);
+    rect(otherX, lineYPoint, soundWaveRect, mappedOther, roundedRectRadius);
   }
 
   
