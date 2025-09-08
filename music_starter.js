@@ -11,6 +11,9 @@ let starY = 200;
 let starSpeed = 0.5;
 let starCircularMotionAngle = 0;
 let starRadius = 80;
+let firstRun = true;
+let myImage;
+let imageSize = 100;
 
 // vocal, drum, bass, and other are volumes ranging from 0 to 100
 
@@ -23,6 +26,12 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   let yellow = color(254,214,123);
 
   randomSeed(3);
+
+  // Show image
+  if (firstRun) {
+    myImage = loadImage('song_cover.png')
+    firstRun = false;
+  }
 
   // Draw line for the sound wave
   lineXStart = width/5;
@@ -79,6 +88,10 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
 
   star(starX, starY, 100*starSize, 40*starSize, 5);
   starMotion(starX, starY, starRadius, starSpeed);
+
+  // Draw image
+  image(myImage, width/2 - imageSize/2, height/2 - imageSize/2, imageSize, imageSize);
+
   text(words, width / 2, height * 0.85);
   if (vocal < 90) {
     textFont('Helvetica');
