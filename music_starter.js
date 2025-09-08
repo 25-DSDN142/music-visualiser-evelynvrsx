@@ -13,7 +13,8 @@ let starCircularMotionAngle = 0;
 let starRadius = 80;
 let firstRun = true;
 let myImage;
-let imageSize = 100;
+let imageSize = 90;
+let vinylSize = 180;
 
 // vocal, drum, bass, and other are volumes ranging from 0 to 100
 
@@ -89,8 +90,13 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   star(starX, starY, 100*starSize, 40*starSize, 5);
   starMotion(starX, starY, starRadius, starSpeed);
 
+  // Draw vinyl record
+  drawVinyl();
+
   // Draw image
   image(myImage, width/2 - imageSize/2, height/2 - imageSize/2, imageSize, imageSize);
+
+  
 
   text(words, width / 2, height * 0.85);
   if (vocal < 90) {
@@ -126,4 +132,13 @@ function starMotion(centerX, centerY, radius, speed) {
   let y = centerY + sin(starCircularMotionAngle) * radius;
   noStroke();
   star(x, y, 100*starSize, 40*starSize, 5);
+}
+
+function drawVinyl() {
+  fill(64, 59, 60);
+  noStroke();
+  ellipse(width/2, height/2, vinylSize, vinylSize);
+  fill(24, 20, 21);
+  noStroke();
+  ellipse(width/2, height/2, vinylSize/1.8, vinylSize/1.8);
 }
