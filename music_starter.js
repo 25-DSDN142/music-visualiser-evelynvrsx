@@ -79,6 +79,10 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
 
   star(starX, starY, 100*starSize, 40*starSize, 5);
   starMotion(starX, starY, starRadius, starSpeed);
+  text(words, width / 2, height * 0.85);
+  if (vocal < 90) {
+    textFont('Helvetica');
+  }
 }
 
 function star(x, y, outerRadius, innerRadius, points) {
