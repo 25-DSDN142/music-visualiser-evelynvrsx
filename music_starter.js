@@ -6,6 +6,11 @@ let lerpSpeed = 0.02;
 let gap = 5;
 let roundedRectRadius = 20;
 let starSize = 0.2;
+let starX = 200;
+let starY = 200;
+let starSpeed = 0.5;
+let starCircularMotionAngle = 0;
+let starRadius = 80;
 
 // vocal, drum, bass, and other are volumes ranging from 0 to 100
 
@@ -72,10 +77,8 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
     rect(otherX, lineYPoint, soundWaveRect, mappedOther, roundedRectRadius);
   }
 
-  star(width/4, height/4, 100*starSize, 40*starSize, 5);
-  
-  //rect(mappedDrum, 200, starDiameter, starDiameter);
-
+  star(starX, starY, 100*starSize, 40*starSize, 5);
+  starMotion(starX, starY, starRadius, starSpeed);
 }
 
 function star(x, y, outerRadius, innerRadius, points) {
@@ -96,4 +99,14 @@ function star(x, y, outerRadius, innerRadius, points) {
     vertex(sx, sy);
   }
   endShape(CLOSE);
+}
+
+// Star circular motion
+// This function is inpired by: https://youtu.be/uRd5iKBpsUA?si=Zeqfcreynf0DOPXj
+function starMotion(centerX, centerY, radius, speed) {
+  starCircularMotionAngle += speed;
+  let x = centerX + cos(starCircularMotionAngle) * radius;
+  let y = centerY + sin(starCircularMotionAngle) * radius;
+  noStroke();
+  star(x, y, 100*starSize, 40*starSize, 5);
 }
