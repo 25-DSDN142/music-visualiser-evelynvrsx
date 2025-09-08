@@ -102,7 +102,7 @@ function star(x, y, outerRadius, innerRadius, points) {
 }
 
 // Star circular motion
-// This function is inpired by: https://youtu.be/uRd5iKBpsUA?si=Zeqfcreynf0DOPXj
+// This function is inspired by: https://youtu.be/uRd5iKBpsUA?si=Zeqfcreynf0DOPXj
 function starMotion(centerX, centerY, radius, speed) {
   starCircularMotionAngle += speed;
   let x = centerX + cos(starCircularMotionAngle) * radius;
