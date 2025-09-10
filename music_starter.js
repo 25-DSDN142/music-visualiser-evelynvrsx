@@ -8,7 +8,7 @@ let roundedRectRadius = 20;
 let starSize = 0.09;
 let starX = 360;
 let starY = 360;
-let starSpeed = 0.12;
+let starSpeed = 0.1;
 let starCircularMotionAngle = 0;
 let starRadius = 100;
 let firstRun = true;
@@ -99,6 +99,8 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   // Draw moving stars on vinyl
   movingStars();
 
+  toneArm();
+
   // Lyrics text
   text(words, width / 2, height * 0.85);
   if (vocal < 90) {
@@ -136,7 +138,9 @@ function starMotion(centerX, centerY, radius, speed, angleOffset = 0) {
   star(x, y, 100*starSize, 40*starSize, 5);
 }
 
+// Draw multiple moving stars with different parameters
 function movingStars() {
+  starMotion(starX, starY, starRadius*0.9, starSpeed*0.8, -15);
   starMotion(starX, starY, starRadius, starSpeed);
   starMotion(starX, starY, starRadius*0.75, starSpeed*1.2);
   starMotion(starX, starY, starRadius*0.9, starSpeed*0.8, 15);
@@ -146,6 +150,12 @@ function movingStars() {
   starMotion(starX, starY, starRadius, starSpeed, 60);
   starMotion(starX, starY, starRadius*0.75, starSpeed*1.2, 60);
   starMotion(starX, starY, starRadius*0.9, starSpeed*0.8, 75);
+  starMotion(starX, starY, starRadius, starSpeed, 90);
+  starMotion(starX, starY, starRadius*0.75, starSpeed*1.2, 90);
+  starMotion(starX, starY, starRadius*0.9, starSpeed*0.8, 105);
+  starMotion(starX, starY, starRadius, starSpeed, 120);
+  starMotion(starX, starY, starRadius*0.75, starSpeed*1.2, 120);
+  starMotion(starX, starY, starRadius*0.9, starSpeed*0.8, 135);
 }
 
 function drawVinyl() {
@@ -156,4 +166,10 @@ function drawVinyl() {
   fill(64, 59, 60); // grey
   noStroke();
   ellipse(width/2, height/2, vinylSize/2.2, vinylSize/2.2);
+}
+
+function toneArm() {
+  fill(150);
+  rect(width/2 - 5, height/2 - vinylSize/1.5, 10, vinylSize/2);
+  rect(width/2 - 5, height/2 - vinylSize/2.8, 20, vinylSize/8);
 }
