@@ -5,16 +5,16 @@ let lerpAmount = 0;
 let lerpSpeed = 0.02;
 let gap = 5;
 let roundedRectRadius = 20;
-let starSize = 0.2;
-let starX = 200;
-let starY = 200;
-let starSpeed = 0.5;
+let starSize = 0.09;
+let starX = 360;
+let starY = 360;
+let starSpeed = 0.12;
 let starCircularMotionAngle = 0;
-let starRadius = 80;
+let starRadius = 100;
 let firstRun = true;
 let myImage;
 let imageSize = 90;
-let vinylSize = 180;
+let vinylSize = 250;
 
 // vocal, drum, bass, and other are volumes ranging from 0 to 100
 
@@ -88,7 +88,7 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   }
 
   star(starX, starY, 100*starSize, 40*starSize, 5);
-  starMotion(starX, starY, starRadius, starSpeed);
+  
 
   // Draw vinyl record
   drawVinyl();
@@ -96,8 +96,10 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   // Draw image
   image(myImage, width/2 - imageSize/2, height/2 - imageSize/2, imageSize, imageSize);
 
-  
+  // Draw moving stars on vinyl
+  movingStars();
 
+  // Lyrics text
   text(words, width / 2, height * 0.85);
   if (vocal < 90) {
     textFont('Helvetica');
@@ -126,19 +128,32 @@ function star(x, y, outerRadius, innerRadius, points) {
 
 // Star circular motion
 // This function is inspired by: https://youtu.be/uRd5iKBpsUA?si=Zeqfcreynf0DOPXj
-function starMotion(centerX, centerY, radius, speed) {
+function starMotion(centerX, centerY, radius, speed, angleOffset = 0) {
   starCircularMotionAngle += speed;
-  let x = centerX + cos(starCircularMotionAngle) * radius;
-  let y = centerY + sin(starCircularMotionAngle) * radius;
+  let x = centerX + cos(starCircularMotionAngle + angleOffset) * radius;
+  let y = centerY + sin(starCircularMotionAngle + angleOffset) * radius;
   noStroke();
   star(x, y, 100*starSize, 40*starSize, 5);
 }
 
+function movingStars() {
+  starMotion(starX, starY, starRadius, starSpeed);
+  starMotion(starX, starY, starRadius*0.75, starSpeed*1.2);
+  starMotion(starX, starY, starRadius*0.9, starSpeed*0.8, 15);
+  starMotion(starX, starY, starRadius, starSpeed, 30);
+  starMotion(starX, starY, starRadius*0.75, starSpeed*1.2, 30);
+  starMotion(starX, starY, starRadius*0.9, starSpeed*0.8, 45);
+  starMotion(starX, starY, starRadius, starSpeed, 60);
+  starMotion(starX, starY, starRadius*0.75, starSpeed*1.2, 60);
+  starMotion(starX, starY, starRadius*0.9, starSpeed*0.8, 75);
+}
+
 function drawVinyl() {
-  fill(64, 59, 60);
-  noStroke();
+  fill(24, 20, 21); // black
+  stroke(61, 59, 60);
+  strokeWeight(4);
   ellipse(width/2, height/2, vinylSize, vinylSize);
-  fill(24, 20, 21);
+  fill(64, 59, 60); // grey
   noStroke();
-  ellipse(width/2, height/2, vinylSize/1.8, vinylSize/1.8);
+  ellipse(width/2, height/2, vinylSize/2.2, vinylSize/2.2);
 }
