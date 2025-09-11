@@ -1,5 +1,5 @@
 var col = 0;
-let soundWaveRect = 30;
+let soundWaveRect = 20;
 let colors = [];
 let lerpAmount = 0;
 let lerpSpeed = 0.02;
@@ -36,9 +36,8 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
 
   // Draw line for the sound wave
   lineXStart = width/5;
-  lineYPoint = height/2;
-  lineXEnd = 4*(width/5);
-  //line(lineXStart, lineYPoint, lineXEnd-gap*2, lineYPoint);
+  lineYPoint = 3*height/4;
+  lineXEnd = 4*width/5;
 
   // Update lerp amount for smooth color transition
   lerpAmount += lerpSpeed;
@@ -47,7 +46,7 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   }
   
   // Map volumes to bar heights
-  let maxBarHeight = height * 0.4;
+  let maxBarHeight = height * 0.1;
   let mappedVocal = map(vocal, 0, 100, 10, maxBarHeight);
   let mappedDrum = map(drum, 0, 100, 10, maxBarHeight);
   let mappedBass = map(bass, 0, 100, 10, maxBarHeight);
@@ -169,7 +168,11 @@ function drawVinyl() {
 }
 
 function toneArm() {
+  push();
   fill(150);
-  rect(width/2 - 5, height/2 - vinylSize/1.5, 10, vinylSize/2);
-  rect(width/2 - 5, height/2 - vinylSize/2.8, 20, vinylSize/8);
+  translate(width/2 - vinylSize/2 - 30, height/2 - 20);
+  rotate(70);
+  rect(0, 0, vinylSize/2, 10);
+  rect(vinylSize/2 - 10, -5, vinylSize/8, 20);
+  pop();
 }
