@@ -103,10 +103,8 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   let textColor = lerpColor(turquoise, blue, lerpAmount);
   fill(textColor);
   textAlign(CENTER, CENTER);
+  
   text(words, width / 2, height / 4);
-  if (vocal > 10) {
-    textFont('Copperplate');
-  }
 }
 
 function star(x, y, outerRadius, innerRadius, points) {
