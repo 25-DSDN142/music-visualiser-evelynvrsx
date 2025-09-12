@@ -19,12 +19,12 @@ let vinylSize = 250;
 // vocal, drum, bass, and other are volumes ranging from 0 to 100
 
 function draw_one_frame(words, vocal, drum, bass, other, counter) {
-  background(20);
-  textFont('Verdana'); // please use CSS safe fonts
+  background(6, 1, 4);
+  textFont('Georgia'); // please use CSS safe fonts
   rectMode(CENTER)
   textSize(24);
-  let pink = color(230, 94, 225);
-  let yellow = color(254,214,123);
+  let blue = color(97, 176, 243);
+  let turquoise = color(188, 234, 228);
 
   randomSeed(3);
 
@@ -69,26 +69,25 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
 
     // draw each track in this group
     // Vocal
-    fill(100, 100, 200);
+    fill(34, 92, 204);
     noStroke();
     rect(vocalX, lineYPoint, soundWaveRect, mappedVocal, roundedRectRadius);
 
     // Drum
-    fill(100, 200, 100);
+    fill(122, 86, 194);
     rect(drumX, lineYPoint, soundWaveRect, mappedDrum, roundedRectRadius);
 
     // Bass
-    fill(200, 100, 100);
+    fill(245, 245, 235);
     rect(bassX, lineYPoint, soundWaveRect, mappedBass, roundedRectRadius);
 
     // Other
-    fill(200, 200, 100);
+    fill(188, 234, 228);
     rect(otherX, lineYPoint, soundWaveRect, mappedOther, roundedRectRadius);
   }
 
   star(starX, starY, 100*starSize, 40*starSize, 5);
   
-
   // Draw vinyl record
   drawVinyl();
 
@@ -101,18 +100,26 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   toneArm();
 
   // Lyrics text
-  text(words, width / 2, height * 0.85);
-  if (vocal < 90) {
-    textFont('Helvetica');
+  let textColor = lerpColor(turquoise, blue, lerpAmount);
+  fill(textColor);
+  textAlign(CENTER, CENTER);
+  text(words, width / 2, height / 4);
+  if (vocal > 10) {
+    textFont('Copperplate');
   }
 }
 
 function star(x, y, outerRadius, innerRadius, points) {
   // Star colour
+  // let pink = color(230, 94, 225);
+  // let yellow = color(254,214,123);
+  // let currentColor = lerpColor(pink, yellow, lerpAmount);
+  // fill(currentColor)
   let pink = color(230, 94, 225);
-  let yellow = color(254,214,123);
+  let blue = color(131, 217, 245);
+  let yellow = color(242,201,90);
   let currentColor = lerpColor(pink, yellow, lerpAmount);
-  fill(currentColor)
+  fill(currentColor);
 
   // Draw star shape
   let angleStep = 360 / (points * 2);
