@@ -169,10 +169,25 @@ function drawVinyl() {
 
 function toneArm() {
   push();
-  fill(150);
-  translate(width/2 - vinylSize/2 - 30, height/2 - 20);
-  rotate(70);
-  rect(0, 0, vinylSize/2, 10);
-  rect(vinylSize/2 - 10, -5, vinylSize/8, 20);
+  stroke(150); 
+  strokeWeight(6);
+  noFill();
+
+  // starting point (near top-left of vinyl)
+  let startX = width/2 - vinylSize/2 - 60;
+  let startY = height/2 - vinylSize/2;
+
+  // draw bent arm with multiple points
+  beginShape();
+  vertex(startX, startY + 10);
+  vertex(startX + 30, startY + 80);  // first bend
+  vertex(startX + 70, startY + 120); // second bend
+  vertex(width/2 - vinylSize/3, height/2); // endpoint near vinyl
+  endShape();
+
+  // draw the cartridge (needle head)
+  fill(180);
+  noStroke();
+  rect(width/2 - vinylSize/3, height/2-2, 25, 20, 3);
   pop();
 }
