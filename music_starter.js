@@ -1,43 +1,198 @@
+var col = 0;
+let soundWaveRect = 20;
+let colors = [];
+let lerpAmount = 0;
+let lerpSpeed = 0.02;
+let gap = 5;
+let roundedRectRadius = 20;
+let starSize = 0.09;
+let starX = 360;
+let starY = 360;
+let starSpeed = 0.1;
+let starCircularMotionAngle = 0;
+let starRadius = 100;
+let firstRun = true;
+let myImage;
+let imageSize = 90;
+let vinylSize = 250;
 
 // vocal, drum, bass, and other are volumes ranging from 0 to 100
+
 function draw_one_frame(words, vocal, drum, bass, other, counter) {
-  background(20)
-  textFont('Verdana'); // please use CSS safe fonts
+  background(6, 1, 4);
+  textFont('Georgia'); 
   rectMode(CENTER)
   textSize(24);
+  let blue = color(97, 176, 243);
+  let turquoise = color(188, 234, 228);
+
+  randomSeed(3);
+
+  // Show image
+  if (firstRun) {
+    myImage = loadImage('song_cover.png')
+    firstRun = false;
+  }
+
+  // Draw line for the sound wave
+  lineXStart = width/5;
+  lineYPoint = 3*height/4;
+  lineXEnd = 4*width/5;
+
+  // Update lerp amount for smooth color transition
+  lerpAmount += lerpSpeed;
+  if (lerpAmount > 1) {
+    lerpAmount = 0;
+  }
   
-   let bar_spacing = height / 10;
-   let bar_height = width / 12;
-   let bar_pos_x = width / 2;
- 
-// changes 
-   // vocal bar is red
-   fill(200, 0, 0);
-   rect(bar_pos_x, height / 2 + 1 * bar_spacing, 4 * vocal, bar_height);
-   fill(0);
-   text("vocals", bar_pos_x, height / 2 + 1 * bar_spacing + 8);
- 
-   // drum bar is green
-   fill(0, 200, 0);
-   rect(bar_pos_x, height / 2 + 2 * bar_spacing, 4 * drum, bar_height);
-   fill(0);
-   text("drums", bar_pos_x, height / 2 + 2 * bar_spacing + 8);
- 
-   // bass bar is blue
-   fill(50, 50, 240);
-   rect(bar_pos_x, height / 2 + 3 * bar_spacing, 4 * bass, bar_height);
-   fill(0);
-   text("bass", bar_pos_x, height / 2 + 3 * bar_spacing + 8);
- 
-   // other bar is white
-   fill(200, 200, 200);
-   rect(bar_pos_x, height / 2 + 4 * bar_spacing, 4 * other, bar_height);
-   fill(0);
-   text("other", bar_pos_x, height / 2 + 4 * bar_spacing + 8);
-   fill(255, 255, 0);
- 
-   // display "words"
-   textAlign(CENTER);
-   textSize(vocal);
-   text(words, width/2, height/3);
+  // Map volumes to bar heights
+  let maxBarHeight = height * 0.1;
+  let mappedVocal = map(vocal, 0, 100, 10, maxBarHeight);
+  let mappedDrum = map(drum, 0, 100, 10, maxBarHeight);
+  let mappedBass = map(bass, 0, 100, 10, maxBarHeight);
+  let mappedOther = map(other, 0, 100, 10, maxBarHeight);
+
+  // compute how many groups of 4 columns fit between lineXStart and lineXEnd
+  let groupWidth = 4 * (soundWaveRect + gap);
+  let availableWidth = lineXEnd - lineXStart;
+  let maxGroups = floor(availableWidth / groupWidth);
+  let groups = min(17, maxGroups);
+
+  for (let i = 0; i < groups; i++) {
+    // base x for this group
+    let baseX = lineXStart + i * groupWidth + (soundWaveRect / 2);
+
+    let vocalX = baseX;
+    let drumX = baseX + (soundWaveRect + gap);
+    let bassX = baseX + 2 * (soundWaveRect + gap);
+    let otherX = baseX + 3 * (soundWaveRect + gap);
+
+    // draw each track in this group
+    // Vocal
+    fill(34, 92, 204);
+    noStroke();
+    rect(vocalX, lineYPoint, soundWaveRect, mappedVocal, roundedRectRadius);
+
+    // Drum
+    fill(122, 86, 194);
+    rect(drumX, lineYPoint, soundWaveRect, mappedDrum, roundedRectRadius);
+
+    // Bass
+    fill(245, 245, 235);
+    rect(bassX, lineYPoint, soundWaveRect, mappedBass, roundedRectRadius);
+
+    // Other
+    fill(188, 234, 228);
+    rect(otherX, lineYPoint, soundWaveRect, mappedOther, roundedRectRadius);
+  }
+
+  // star(starX, starY, 100*starSize, 40*starSize, 5);
+  
+  // Draw vinyl record
+  drawVinyl();
+
+  // Draw image
+  image(myImage, width/2 - imageSize/2, height/2 - imageSize/2, imageSize, imageSize);
+
+  // Draw moving stars on vinyl
+  movingStars();
+
+  toneArm();
+
+  // Lyrics text
+  let textColor = lerpColor(turquoise, blue, lerpAmount);
+  fill(textColor);
+  textAlign(CENTER, CENTER);
+  
+  text(words, width / 2, height / 4);
+}
+
+function star(x, y, outerRadius, innerRadius, points) {
+  // Star colour
+  // let pink = color(230, 94, 225);
+  // let yellow = color(254,214,123);
+  // let currentColor = lerpColor(pink, yellow, lerpAmount);
+  // fill(currentColor)
+  let pink = color(230, 94, 225);
+  let blue = color(131, 217, 245);
+  let yellow = color(242,201,90);
+  let currentColor = lerpColor(pink, yellow, lerpAmount);
+  fill(currentColor);
+
+  // Draw star shape
+  let angleStep = 360 / (points * 2);
+  beginShape();
+  for (let i = 0; i < points * 2; i++) {
+    let angle = i * angleStep - 90; // start pointing upwards
+    let r = (i % 2 === 0) ? outerRadius : innerRadius;
+    let sx = x + cos(angle) * r;
+    let sy = y + sin(angle) * r;
+    vertex(sx, sy);
+  }
+  endShape(CLOSE);
+}
+
+// Star circular motion
+// This function is inspired by: https://youtu.be/uRd5iKBpsUA?si=Zeqfcreynf0DOPXj
+function starMotion(centerX, centerY, radius, speed, angleOffset = 0) {
+  starCircularMotionAngle += speed;
+  let x = centerX + cos(starCircularMotionAngle + angleOffset) * radius;
+  let y = centerY + sin(starCircularMotionAngle + angleOffset) * radius;
+  noStroke();
+  star(x, y, 100*starSize, 40*starSize, 5);
+}
+
+// Draw multiple moving stars with different parameters
+function movingStars() {
+  starMotion(starX, starY, starRadius*0.9, starSpeed*0.8, -15);
+  starMotion(starX, starY, starRadius, starSpeed);
+  starMotion(starX, starY, starRadius*0.75, starSpeed*1.2);
+  starMotion(starX, starY, starRadius*0.9, starSpeed*0.8, 15);
+  starMotion(starX, starY, starRadius, starSpeed, 30);
+  starMotion(starX, starY, starRadius*0.75, starSpeed*1.2, 30);
+  starMotion(starX, starY, starRadius*0.9, starSpeed*0.8, 45);
+  starMotion(starX, starY, starRadius, starSpeed, 60);
+  starMotion(starX, starY, starRadius*0.75, starSpeed*1.2, 60);
+  starMotion(starX, starY, starRadius*0.9, starSpeed*0.8, 75);
+  starMotion(starX, starY, starRadius, starSpeed, 90);
+  starMotion(starX, starY, starRadius*0.75, starSpeed*1.2, 90);
+  starMotion(starX, starY, starRadius*0.9, starSpeed*0.8, 105);
+  starMotion(starX, starY, starRadius, starSpeed, 120);
+  starMotion(starX, starY, starRadius*0.75, starSpeed*1.2, 120);
+  starMotion(starX, starY, starRadius*0.9, starSpeed*0.8, 135);
+}
+
+function drawVinyl() {
+  fill(24, 20, 21); // black
+  stroke(61, 59, 60);
+  strokeWeight(4);
+  ellipse(width/2, height/2, vinylSize, vinylSize);
+  fill(64, 59, 60); // grey
+  noStroke();
+  ellipse(width/2, height/2, vinylSize/2.2, vinylSize/2.2);
+}
+
+function toneArm() {
+  push();
+  stroke(150); 
+  strokeWeight(6);
+  noFill();
+
+  // starting point (near top-left of vinyl)
+  let startX = width/2 - vinylSize/2 - 60;
+  let startY = height/2 - vinylSize/2;
+
+  // draw bent arm with multiple points
+  beginShape();
+  vertex(startX, startY + 10);
+  vertex(startX + 30, startY + 80);  // first bend
+  vertex(startX + 70, startY + 120); // second bend
+  vertex(width/2 - vinylSize/3, height/2); // endpoint near vinyl
+  endShape();
+
+  // draw the cartridge (needle head)
+  fill(180);
+  noStroke();
+  rect(width/2 - vinylSize/3, height/2-2, 25, 20, 3);
+  pop();
 }
