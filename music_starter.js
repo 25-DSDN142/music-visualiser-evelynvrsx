@@ -20,7 +20,7 @@ let vinylSize = 250;
 
 function draw_one_frame(words, vocal, drum, bass, other, counter) {
   background(6, 1, 4);
-  textFont('Georgia'); // please use CSS safe fonts
+  textFont('Georgia'); 
   rectMode(CENTER)
   textSize(24);
   let blue = color(97, 176, 243);
@@ -86,7 +86,7 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
     rect(otherX, lineYPoint, soundWaveRect, mappedOther, roundedRectRadius);
   }
 
-  star(starX, starY, 100*starSize, 40*starSize, 5);
+  // star(starX, starY, 100*starSize, 40*starSize, 5);
   
   // Draw vinyl record
   drawVinyl();
